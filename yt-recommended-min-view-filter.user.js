@@ -10,7 +10,7 @@
 (function() {
   'use strict';
 
-  const MIN_VIEWS = 500_000; // adjust this number if you want (e.g. 1_000_000)
+  const MIN_VIEWS = 100_000; // adjust this number if you want (e.g. 1_000_000)
 
   const parseViews = (text) => {
     if (!text) return 0;
