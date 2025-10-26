@@ -1,9 +1,11 @@
 // ==UserScript==
-// @name         WASD as Arrow Keys (with YouTube volume support)
+// @name         WASD as Arrow Keys (with YouTube volume support, Reddit-safe)
 // @namespace    http://tampermonkey.net/
-// @version      1.1
-// @description  Use W, A, S, D as Arrow Keys — including volume control on YouTube and other video players
+// @version      1.2
+// @description  Use W, A, S, D as Arrow Keys — including volume control on YouTube and other video players, but disabled on Reddit
 // @match        *://*/*
+// @exclude      *://www.reddit.com/*
+// @exclude      *://old.reddit.com/*
 // @run-at       document-start
 // @grant        none
 // ==/UserScript==
@@ -33,30 +35,24 @@
 
         const newKey = map[key];
 
-        // find active video
         const video = document.querySelector('video');
 
         if (video) {
             switch (newKey) {
                 case 'ArrowUp':
-                    // Volume up
                     video.volume = Math.min(video.volume + 0.05, 1);
                     break;
                 case 'ArrowDown':
-                    // Volume down
                     video.volume = Math.max(video.volume - 0.05, 0);
                     break;
                 case 'ArrowLeft':
-                    // Seek back 5 seconds
                     video.currentTime = Math.max(video.currentTime - 5, 0);
                     break;
                 case 'ArrowRight':
-                    // Seek forward 5 seconds
                     video.currentTime = Math.min(video.currentTime + 5, video.duration);
                     break;
             }
         } else {
-            // fallback: trigger actual arrow key event for non-video uses (like scrolling, etc.)
             const evt = new KeyboardEvent('keydown', {
                 key: newKey,
                 code: newKey,
